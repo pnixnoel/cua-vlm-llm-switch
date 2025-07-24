@@ -1,6 +1,14 @@
 // Export classes
-export { CloudComputer as Computer } from './computer';
+export {
+  BaseComputer,
+  CloudComputer as Computer,
+} from './computer';
 
-//todo: figure out what types to export and how to do that
-//
-export { OSType } from './types';
+// Export common types for library consumers
+export { OSType, ScreenSize } from './types';
+export {
+  Display,
+  BaseComputerConfig,
+  CloudComputerConfig,
+  VMProviderType,
+} from './computer/types';
