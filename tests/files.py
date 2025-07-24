@@ -21,6 +21,13 @@ from dotenv import load_dotenv
 
 load_dotenv(env_file)
 
+# Skip tests if required environment variables are missing
+if not os.getenv("CUA_API_KEY") or not os.getenv("CUA_CONTAINER_NAME"):
+    pytest.skip(
+        "Missing CUA_API_KEY or CUA_CONTAINER_NAME environment variables",
+        allow_module_level=True,
+    )
+
 # Add paths to sys.path if needed
 pythonpath = os.environ.get("PYTHONPATH", "")
 for path in pythonpath.split(":"):
