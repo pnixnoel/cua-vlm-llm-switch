@@ -80,11 +80,11 @@ async def test_watchdog_recovery_after_hanging_command(computer):
     print("Starting watchdog recovery test...")
     
     async def hanging_command():
-        """Execute a command that sleeps forever to hang the server."""
+        """Execute a command that sleeps for five minutes to hang the server."""
         try:
-            print("Starting hanging command (sleep infinity)...")
-            # Use a very long sleep that should never complete naturally
-            result = await computer.interface.run_command("sleep 999999")
+            print("Starting hanging command (sleep 300)...")
+            # Use a 5 minute sleep to simulate a hanging command
+            result = await computer.interface.run_command("sleep 300")
             print(f"Hanging command completed unexpectedly: {result}")
             return True  # Should never reach here if watchdog works
         except Exception as e:
