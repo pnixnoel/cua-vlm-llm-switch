@@ -98,4 +98,10 @@ def get_image_size(image_bytes: bytes) -> Tuple[int, int]:
 def parse_vm_info(vm_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Parse VM info from pylume response."""
     if not vm_info:
-        return None 
+        return None
+
+    # Only expose a subset of keys that are relevant to the caller
+    fields = ["ip_address", "name", "provider", "status"]
+    parsed = {field: vm_info.get(field) for field in fields if field in vm_info}
+
+    return parsed
