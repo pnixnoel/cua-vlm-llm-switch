@@ -72,7 +72,7 @@ async def test_watchdog_recovery_after_hanging_command(computer):
     Test that the watchdog can recover the server after a hanging command.
     
     This test runs two concurrent tasks:
-    1. A long-running command that hangs the server (sleep 300 = 5 minutes)
+    1. A long-running command that hangs the server (sleep 999999)
     2. Periodic ping commands every 30 seconds to test server responsiveness
     
     The watchdog should detect the unresponsive server and restart it.
@@ -82,7 +82,7 @@ async def test_watchdog_recovery_after_hanging_command(computer):
     async def hanging_command():
         """Execute a command that sleeps forever to hang the server."""
         try:
-            print("Starting hanging command (sleep infinity)...")
+            print("Starting hanging command (sleep 999999)...")
             # Use a very long sleep that should never complete naturally
             result = await computer.interface.run_command("sleep 999999")
             print(f"Hanging command completed unexpectedly: {result}")
