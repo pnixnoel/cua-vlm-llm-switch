@@ -198,10 +198,10 @@ lume create my-vm --os macos --cpu 4 --memory 8GB --disk-size 50GB
 lume run macos-sequoia-cua:latest
 
 # Stop a VM
-lume stop macos-sequoia-cua_latest
+lume stop macos-sequoia-cua:latest
 
 # Delete a VM
-lume delete macos-sequoia-cua_latest
+lume delete macos-sequoia-cua:latest
 ```
 
 ### Lumier CLI Reference
