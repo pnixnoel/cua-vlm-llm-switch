@@ -24,6 +24,7 @@ class LLMProvider(StrEnum):
     OLLAMA = "ollama"
     OAICOMPAT = "oaicompat"
     MLXVLM= "mlxvlm"
+    AZURE = "azure"
 
 
 @dataclass
