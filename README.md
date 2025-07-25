@@ -104,6 +104,7 @@ Or check out the [Usage Guide](#-usage-guide) to learn how to use our Python SDK
 
 - [UITARS-1.5](https://github.com/trycua/cua/blob/main/libs/python/agent/README.md#agent-loops) - Run locally on Apple Silicon with MLX, or use cloud providers
 - [OpenAI CUA](https://github.com/trycua/cua/blob/main/libs/python/agent/README.md#agent-loops) - Use OpenAI's Computer-Use Preview model
+- [Azure OpenAI CUA](https://github.com/trycua/cua/blob/main/libs/python/agent/README.md#agent-loops) - Use Azure-hosted OpenAI models
 - [Anthropic CUA](https://github.com/trycua/cua/blob/main/libs/python/agent/README.md#agent-loops) - Use Anthropic's Computer-Use capabilities
 - [OmniParser-v2.0](https://github.com/trycua/cua/blob/main/libs/python/agent/README.md#agent-loops) - Control UI with [Set-of-Marks prompting](https://som-gpt4v.github.io/) using any vision model
 
@@ -175,6 +176,18 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+```
+
+### Required Environment Variables
+
+Set environment variables for any cloud providers:
+
+```bash
+export OPENAI_API_KEY=your_openai_key
+export ANTHROPIC_API_KEY=your_anthropic_key
+export AZURE_OPENAI_API_KEY=your_azure_key
+export AZURE_OPENAI_ENDPOINT=https://<resource>.openai.azure.com
+export AZURE_OPENAI_DEPLOYMENT_NAME=llama4
 ```
 
 For ready-to-use examples, check out our [Notebooks](./notebooks/) collection.
@@ -349,6 +362,8 @@ from agent import ComputerAgent, LLM, AgentLoop, LLMProvider
 ComputerAgent(loop=AgentLoop.UITARS, model=LLM(provider=LLMProvider.MLXVLM, name="mlx-community/UI-TARS-1.5-7B-6bit"))   
 # OpenAI Computer-Use agent using OPENAI_API_KEY  
 ComputerAgent(loop=AgentLoop.OPENAI, model=LLM(provider=LLMProvider.OPENAI, name="computer-use-preview"))
+# Azure Computer-Use agent using AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT
+ComputerAgent(loop=AgentLoop.OPENAI, model=LLM(provider=LLMProvider.AZURE, name="llama4"))
 # Anthropic Claude agent using ANTHROPIC_API_KEY
 ComputerAgent(loop=AgentLoop.ANTHROPIC, model=LLM(provider=LLMProvider.ANTHROPIC))
 

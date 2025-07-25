@@ -44,6 +44,11 @@ Each package has its own virtual environment and dependencies, managed through P
 
     # Required for OpenAI provider
     OPENAI_API_KEY=your_openai_key_here
+
+    # Required for Azure provider
+    AZURE_OPENAI_API_KEY=your_azure_key_here
+    AZURE_OPENAI_ENDPOINT=https://<resource>.openai.azure.com
+    AZURE_OPENAI_DEPLOYMENT_NAME=llama4
     ```
 
 4. Open the workspace in VSCode or Cursor:

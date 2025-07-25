@@ -15,7 +15,7 @@
 </h1>
 </div>
 
-**cua-agent** is a general Computer-Use framework for running multi-app agentic workflows targeting macOS and Linux sandbox created with Cua, supporting local (Ollama) and cloud model providers (OpenAI, Anthropic, Groq, DeepSeek, Qwen).
+**cua-agent** is a general Computer-Use framework for running multi-app agentic workflows targeting macOS and Linux sandbox created with Cua, supporting local (Ollama) and cloud model providers (OpenAI, Azure OpenAI, Anthropic, Groq, DeepSeek, Qwen).
 
 ### Get started with Agent
 
