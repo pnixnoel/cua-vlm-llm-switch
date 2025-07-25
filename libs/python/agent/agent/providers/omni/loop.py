@@ -18,6 +18,7 @@ from ...core.types import AgentResponse
 from computer import Computer
 from ...core.types import LLMProvider
 from .clients.openai import OpenAIClient
+from .clients.azure_openai import AzureOpenAIClient
 from .clients.anthropic import AnthropicClient
 from .clients.ollama import OllamaClient
 from .clients.oaicompat import OAICompatClient
@@ -139,6 +140,12 @@ class OmniLoop(BaseLoop):
                 api_key=self.api_key,
                 model=self.model,
             )
+        elif self.provider == LLMProvider.AZURE:
+            self.client = AzureOpenAIClient(
+                api_key=self.api_key,
+                model=self.model,
+                provider_base_url=self.provider_base_url,
+            )
         elif self.provider == LLMProvider.OLLAMA:
             self.client = OllamaClient(
                 api_key=self.api_key,
@@ -168,6 +175,12 @@ class OmniLoop(BaseLoop):
 
             if self.provider == LLMProvider.OPENAI:
                 self.client = OpenAIClient(api_key=self.api_key, model=self.model)
+            elif self.provider == LLMProvider.AZURE:
+                self.client = AzureOpenAIClient(
+                    api_key=self.api_key,
+                    model=self.model,
+                    provider_base_url=self.provider_base_url,
+                )
             elif self.provider == LLMProvider.ANTHROPIC:
                 self.client = AnthropicClient(
                     api_key=self.api_key,
@@ -266,6 +279,21 @@ class OmniLoop(BaseLoop):
                     response = await self.client.run_interleaved(
                         messages=filtered_messages,
                         system=final_system_prompt,
+                        max_tokens=self.max_tokens,
+                    )
+                elif self.provider == LLMProvider.AZURE:
+                    # Azure uses OpenAI-compatible format
+                    request_data = {
+                        "messages": prepared_messages,
+                        "max_tokens": self.max_tokens,
+                        "system": system_prompt,
+                    }
+
+                    self._log_api_call("request", request_data)
+
+                    response = await self.client.run_interleaved(
+                        messages=prepared_messages,
+                        system=system_prompt,
                         max_tokens=self.max_tokens,
                     )
                 else:
@@ -406,6 +434,13 @@ class OmniLoop(BaseLoop):
             elif self.provider == LLMProvider.OAICOMPAT:
                 try:
                     # OpenAI-compatible response format
+                    raw_text = response["choices"][0]["message"]["content"]
+                    standard_content = [{"type": "text", "text": raw_text}]
+                except (KeyError, TypeError, IndexError) as e:
+                    logger.error(f"Invalid response format: {str(e)}")
+                    return True, action_screenshot_saved
+            elif self.provider == LLMProvider.AZURE:
+                try:
                     raw_text = response["choices"][0]["message"]["content"]
                     standard_content = [{"type": "text", "text": raw_text}]
                 except (KeyError, TypeError, IndexError) as e:
