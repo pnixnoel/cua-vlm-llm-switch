@@ -1,8 +1,9 @@
 """Core type definitions."""
 
-from typing import Any, Dict, List, Optional, TypedDict, Union
-from enum import StrEnum
+import os
 from dataclasses import dataclass
+from enum import StrEnum
+from typing import Any, Dict, List, Optional, TypedDict, Union
 
 
 class AgentLoop(StrEnum):
@@ -21,9 +22,10 @@ class LLMProvider(StrEnum):
 
     ANTHROPIC = "anthropic"
     OPENAI = "openai"
+    AZURE_OPENAI = "azure_openai"
     OLLAMA = "ollama"
     OAICOMPAT = "oaicompat"
-    MLXVLM= "mlxvlm"
+    MLXVLM = "mlxvlm"
 
 
 @dataclass
@@ -42,13 +44,16 @@ class LLM:
             self.name = DEFAULT_MODELS.get(self.provider)
 
         # Set default provider URL if none provided
-        if self.provider_base_url is None and self.provider == LLMProvider.OAICOMPAT:
-            # Default for vLLM
-            self.provider_base_url = "http://localhost:8000/v1"
-            # Common alternatives:
-            # - LM Studio: "http://localhost:1234/v1"
-            # - LocalAI: "http://localhost:8080/v1"
-            # - Ollama with OpenAI compatible API: "http://localhost:11434/v1"
+        if self.provider_base_url is None:
+            if self.provider == LLMProvider.OAICOMPAT:
+                # Default for vLLM
+                self.provider_base_url = "http://localhost:8000/v1"
+                # Common alternatives:
+                # - LM Studio: "http://localhost:1234/v1"
+                # - LocalAI: "http://localhost:8080/v1"
+                # - Ollama with OpenAI compatible API: "http://localhost:11434/v1"
+            elif self.provider == LLMProvider.AZURE_OPENAI:
+                self.provider_base_url = os.getenv("AZURE_OPENAI_ENDPOINT")
 
 
 # For backward compatibility
